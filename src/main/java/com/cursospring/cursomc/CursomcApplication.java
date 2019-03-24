@@ -8,24 +8,47 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.cursospring.cursomc.domain.Categoria;
+import com.cursospring.cursomc.domain.Produto;
 import com.cursospring.cursomc.repositories.CategoriaRepository;
+import com.cursospring.cursomc.repositories.ProdutoRepository;
 
 @SpringBootApplication
 public class CursomcApplication implements CommandLineRunner{
 
+	//Instancia dos Repositories
 	@Autowired
 	private CategoriaRepository categoriaRepository;
+	@Autowired
+	private ProdutoRepository produtoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
 	}
 
+	//Criação de registros automáticos nas tabelas
 	@Override
 	public void run(String... args) throws Exception {
+		//Criação de registros de Categorias
 		Categoria cat1 = new Categoria(null, "Informática");
 		Categoria cat2 = new Categoria(null, "Escritório");
 		
+		//Criação de registros de Produtos
+		Produto p1 = new Produto(null, "Computador", 2000.00);
+		Produto p2 = new Produto(null, "Impressora", 800.00);
+		Produto p3 = new Produto(null, "Mouse", 80.00);
+		
+		//Associação de categoria_produto
+		cat1.getProdutos().addAll(Arrays.asList(p1,p2,p3));
+		cat2.getProdutos().addAll(Arrays.asList(p2));
+		
+		//Associação de produto_categoria
+		p1.getCategorias().addAll(Arrays.asList(cat1));
+		p2.getCategorias().addAll(Arrays.asList(cat1, cat2));
+		p3.getCategorias().addAll(Arrays.asList(cat1));
+		
+		//Chama o métodos dos repositories para salvar os registros
 		categoriaRepository.saveAll(Arrays.asList(cat1,cat2));
+		produtoRepository.saveAll(Arrays.asList(p1,p2,p3));
 		
 	}
 
