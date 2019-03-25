@@ -23,7 +23,7 @@ public class Categoria implements Serializable{
 	private String nome;
 	
 	//Atributo de associação
-	@JsonManagedReference
+	@JsonManagedReference //protege contra serialização cíclica
 	@ManyToMany(mappedBy = "categorias")
 	private List<Produto> produtos = new ArrayList<>();
 	

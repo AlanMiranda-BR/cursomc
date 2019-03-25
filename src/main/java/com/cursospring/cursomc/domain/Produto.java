@@ -26,7 +26,7 @@ public class Produto implements Serializable {
 	private double preco;
 	
 	//Atributo de associação 
-	@JsonBackReference
+	@JsonBackReference //protege contra serialização cíclica
 	@ManyToMany
 	@JoinTable(	name = "PRODUTO_CATEGORIA", 
 				joinColumns = @JoinColumn(name = "produto_id"),
