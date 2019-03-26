@@ -5,14 +5,18 @@ import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class ItemPedido implements Serializable{
 	private static final long serialVersionUID = 1L;
 
+	//Atributos da classe associativa
+	@JsonIgnore //Impede a Serialização (ver aula 27 da seção 2) (Observer que os gets também precisam ser ignorados)
 	@EmbeddedId //Notação que informa que o atributo é um ID embutido em um tipo auxiliar.
 	private ItemPedidoPK id = new ItemPedidoPK(); //atributo composto para criar PK/FK
 	
-	//Atributos da classe associativa
+	
 	private Double desconto;
 	private Integer quantidade;
 	private Double preco;
@@ -31,11 +35,12 @@ public class ItemPedido implements Serializable{
 	}
 
 	//Getters e Setters
-	public Pedido getPedido() { //Criado manualmente
+	@JsonIgnore
+	public Pedido getPedido() { //Criado manualmente, precisa impedir a Serialização com o JsonIgnore para evitar referência cíclica
 		return id.getPedido();
 	}
 	
-	public Produto getProduto() { //Criado manualmente
+	public Produto getProduto() { //Criado manualmente, permite a Serialização pois é desejavel que os produtos sejam apresentados no Request
 		return id.getProduto();
 	}
 	

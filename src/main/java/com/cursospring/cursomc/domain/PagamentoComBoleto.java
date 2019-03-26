@@ -5,13 +5,16 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 import com.cursospring.cursomc.domain.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 public class PagamentoComBoleto extends Pagamento{
 	private static final long serialVersionUID = 1L;
 	
 	//Atributos da classe
+	@JsonFormat(pattern = "dd/MM/yyyy") //Fomata a resposta Json para o Pattern escolhido, evitando que este dado seja exibido em milissegundos//Fomata a resposta Json para o Pattern escolhido, evitando que este dado seja exibido em milissegundos
 	private Date dataVencimento;
+	@JsonFormat(pattern = "dd/MM/yyyy") //Fomata a resposta Json para o Pattern escolhido, evitando que este dado seja exibido em milissegundos//Fomata a resposta Json para o Pattern escolhido, evitando que este dado seja exibido em milissegundos
 	private Date dataPagamento;
 	
 	//Construtor vazio

@@ -11,6 +11,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.cursospring.cursomc.domain.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) //Estratégia para juntar as entidades filhas (escolhido por terem poucos atributos), criando uma única tabela
@@ -24,6 +25,7 @@ public abstract class Pagamento implements Serializable {
 	
 	
 	//Atributo da associação pagamento_pedido
+	@JsonBackReference //Protege contra serialização cíclica. Não permite que os pedidos do cliente sejam serializados pelo cliente
 	@OneToOne
 	@JoinColumn(name = "pedido_id")
 	@MapsId

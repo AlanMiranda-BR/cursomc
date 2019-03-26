@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Produto implements Serializable {
@@ -37,6 +38,7 @@ public class Produto implements Serializable {
 	)
 	private List<Categoria> categorias = new ArrayList<>();
 	
+	@JsonIgnore // Impede a Serialização (Produtos não irão listar os pedidos, apenas o caminho inverso ocorre), O get também precisa receber o JsonIgnore
 	@OneToMany(mappedBy = "id.produto")
 	private Set<ItemPedido> itens = new HashSet<>();//Conjunto de ItemPedido necessário para a classe associativa
 	
@@ -52,6 +54,7 @@ public class Produto implements Serializable {
 	}
 	
 	//Getters e Setters
+	@JsonIgnore //Impede a Serialização 
 	public List<Pedido> getPedidos(){ //Criado manualmente para preencher a lista de pedidos
 		List<Pedido> lista = new ArrayList<>();
 		for(ItemPedido x : itens) {
