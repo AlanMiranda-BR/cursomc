@@ -13,6 +13,7 @@ import com.cursospring.cursomc.domain.Cidade;
 import com.cursospring.cursomc.domain.Cliente;
 import com.cursospring.cursomc.domain.Endereco;
 import com.cursospring.cursomc.domain.Estado;
+import com.cursospring.cursomc.domain.ItemPedido;
 import com.cursospring.cursomc.domain.Pagamento;
 import com.cursospring.cursomc.domain.PagamentoComBoleto;
 import com.cursospring.cursomc.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.cursospring.cursomc.repositories.CidadeRepository;
 import com.cursospring.cursomc.repositories.ClienteRepository;
 import com.cursospring.cursomc.repositories.EnderecoRepository;
 import com.cursospring.cursomc.repositories.EstadoRepository;
+import com.cursospring.cursomc.repositories.ItemPedidoRepository;
 import com.cursospring.cursomc.repositories.PagamentoRepository;
 import com.cursospring.cursomc.repositories.PedidoRepository;
 import com.cursospring.cursomc.repositories.ProdutoRepository;
@@ -49,6 +51,8 @@ public class CursomcApplication implements CommandLineRunner{
 	private PedidoRepository pedidoRepository;
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -104,10 +108,23 @@ public class CursomcApplication implements CommandLineRunner{
 		
 		//Criação de registros dos pagamentos
 		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
-		ped1.setPagamento(pagto1); //Associa o pagamento com o pedido
+			ped1.setPagamento(pagto1); //Associa o pagamento com o pedido
 		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 00:00"), null);
-		ped2.setPagamento(pagto2); //Associa o pagamento com o pedido
-		cli1.getPedidos().addAll(Arrays.asList(ped1,ped2)); //Associa o cliente com o pedido
+			ped2.setPagamento(pagto2); //Associa o pagamento com o pedido
+			//Associa o cliente com o pedido
+			cli1.getPedidos().addAll(Arrays.asList(ped1,ped2)); 
+		
+		//Criação de registros dos itens_pedidos (Entidade Associativa)
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+			//Associa os pedidos com o Item_Pedido
+			ped1.getItens().addAll(Arrays.asList(ip1, ip2)); 
+			ped2.getItens().addAll(Arrays.asList(ip3));
+			//Associa os produtos com o Item_Pedido
+			p1.getItens().addAll(Arrays.asList(ip1));
+			p2.getItens().addAll(Arrays.asList(ip3));
+			p3.getItens().addAll(Arrays.asList(ip2));
 		
 		//Chama o métodos dos repositories para salvar os registros
 		categoriaRepository.saveAll(Arrays.asList(cat1,cat2));
@@ -122,6 +139,7 @@ public class CursomcApplication implements CommandLineRunner{
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3));
 			
 	}
 }
