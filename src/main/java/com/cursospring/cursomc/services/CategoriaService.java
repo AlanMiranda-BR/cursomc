@@ -5,6 +5,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.cursospring.cursomc.domain.Categoria;
@@ -51,4 +54,16 @@ public class CategoriaService {
 		return repo.findAll();
 	}
 	
+	/**
+	 * Busca os registros da tabela e realiza a paginação (Separa o resultado por quantidade e por ordem)
+	 * @param page Informa qual a página que se quer mostrar.
+	 * @param linesPerPage Determina quantas linhas se quer mostrar por págine
+	 * @param orderBy Determina por qual atributo se quer ordenar os registros
+	 * @param direction Determina qual a ordem da ordenação (Cresc ou Decr)
+	 * @return Um objeto PageRequest com o conteúdo buscado
+	 */
+	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		return repo.findAll(pageRequest);
+	}
 }
