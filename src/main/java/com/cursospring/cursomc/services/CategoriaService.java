@@ -36,8 +36,9 @@ public class CategoriaService {
 	
 	// Método de atualização de registros
 	public Categoria update(Categoria obj) {
-		find(obj.getId()); // Garante que o ID fornecido foi encontrado
-		return repo.save(obj); 	//Chama a função save do Repository
+		Categoria newObj = find(obj.getId()); // Garante que o ID fornecido foi encontrado
+		updateData(newObj, obj);
+		return repo.save(newObj); 	//Chama a função save do Repository
 	}
 	
 	// Método que deleta um registro da tabela
@@ -75,5 +76,15 @@ public class CategoriaService {
 	 */
 	public Categoria fromDTO(CategoriaDTO objDTO) {
 		return new Categoria(objDTO.getId(), objDTO.getNome());
+	}
+	
+	/**
+	 * Método auxiliar utilizado pelo método UPDATE para atualizar somente os atributos permitidos pelo CategoriaDTO
+	 * @param newObj objeto com os dados novos
+	 * @param obj objeto, buscado e monitorado pelo JPA, que será atualizado
+	 */
+	private void updateData(Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getNome());
+		newObj.setProdutos(obj.getProdutos());
 	}
 }
