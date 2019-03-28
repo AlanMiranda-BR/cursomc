@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.cursospring.cursomc.domain.Categoria;
+import com.cursospring.cursomc.dto.CategoriaDTO;
 import com.cursospring.cursomc.repositories.CategoriaRepository;
 import com.cursospring.cursomc.services.exceptions.DataIntegrityException;
 import com.cursospring.cursomc.services.exceptions.ObjectNotFoundException;
@@ -65,5 +66,14 @@ public class CategoriaService {
 	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
+	}
+	
+	/**
+	 * Método auxiliar que instancia um objeto da Classe principal (Categoria) a partir de um objetoDTO. Usado para o proceso de validação.
+	 * @param objDTO 
+	 * @return um objeto Categoria a partir dos atributos de um objeto CategoriaDTO.
+	 */
+	public Categoria fromDTO(CategoriaDTO objDTO) {
+		return new Categoria(objDTO.getId(), objDTO.getNome());
 	}
 }

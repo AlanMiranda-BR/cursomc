@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +51,8 @@ public class CategoriaResource {
 	 */
 	//@RequestMapping(method = RequestMethod.POST) //Método de request POST que adiciona uma nova categoria.
 	@PostMapping //Alternativa mais curta para a notação comentada acima
-	public ResponseEntity<Void> insert(@RequestBody Categoria obj){ //A resposta retorna uma mensagem com corpo vazio(VOID) mas recebe como argumento um obj da classe Categoria
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDTO){ //A resposta retorna uma mensagem com corpo vazio(VOID) mas recebe como argumento um obj da classe Categoria
+		Categoria obj = service.fromDTO(objDTO); //Cria um objeto Categoria a partir de um objeto CategoriaDTO, pois a validação é feita em CategoriaDTO.
 		obj = service.insert(obj);
 		//Boa prática do Spring, retorna a resposta adequada ao request (201 _create successful) juntamente com a nova url e o respectivo ID do objeto criado.
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
@@ -63,7 +66,8 @@ public class CategoriaResource {
 	 */
 	//@RequestMapping(value = "/{id}", method = RequestMethod.PUT) //Método de request PUT que atualiza a categoria com Id igual ao argumento.
 	@PutMapping(value = "/{id}") //Alternativa mais curta para a notação comentada acima
-	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id){
+	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDTO, @PathVariable Integer id){
+		Categoria obj = service.fromDTO(objDTO); //Cria um objeto Categoria a partir de um objeto CategoriaDTO, pois a validação é feita em CategoriaDTO.
 		obj.setId(id); //Garante que o objeto a ser atualizado é o objeto com o Id informado pelo PUT
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build(); //Constroi e retorna a resposta do Request PUT sem conteúdo no corpo da mensagem.
