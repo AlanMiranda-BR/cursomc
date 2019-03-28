@@ -4,6 +4,7 @@ import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -31,8 +32,10 @@ public class CategoriaResource {
 		return ResponseEntity.ok().body(obj); 
 	}
 	
-	/**Método responsável por inserir uma nova categoria.
-	 * @RequestBody faz com que o objeto Categoria seja convertido para um Objeto Json automaticamente.*/
+	/**
+	 * Método responsável por inserir uma nova categoria.
+	 * @RequestBody faz com que o objeto Categoria seja convertido para um Objeto Json automaticamente.
+	 */
 	//@RequestMapping(method = RequestMethod.POST) //Método de request POST que adiciona uma nova categoria.
 	@PostMapping //Alternativa mais curta para a notação comentada acima
 	public ResponseEntity<Void> insert(@RequestBody Categoria obj){ //A resposta retorna uma mensagem com corpo vazio(VOID) mas recebe como argumento um obj da classe Categoria
@@ -42,14 +45,27 @@ public class CategoriaResource {
 		return ResponseEntity.created(uri).build(); //retorna a resposta com a URI criada acima.
 	}
 	
-	/**Método responsável por atualizar uma categoria existente.
+	/**
+	 * Método responsável por atualizar uma categoria existente.
 	 * @RequestBody faz com que o objeto Categoria seja convertido para um Objeto Json automaticamente.
-	 * @PathVariable indica que um parâmetro de método deve ser ligado a uma variável do URI.*/
+	 * @PathVariable indica que um parâmetro de método deve ser ligado a uma variável do URI.
+	 */
 	//@RequestMapping(value = "/{id}", method = RequestMethod.PUT) //Método de request PUT que atualiza a categoria com Id igual ao argumento.
 	@PutMapping(value = "/{id}") //Alternativa mais curta para a notação comentada acima
 	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id){
 		obj.setId(id); //Garante que o objeto a ser atualizado é o objeto com o Id informado pelo PUT
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build(); //Constroi e retorna a resposta do Request PUT sem conteúdo no corpo da mensagem.
+	}
+	
+	/**
+	 * @param id  ID do registro a ser deletado
+	 * @PathVariable indica que um parâmetro de método deve ser ligado a uma variável do URI.
+	 * @return Constroi e retorna a resposta do Request PUT sem conteúdo no corpo da mensagem.
+	 */
+	@DeleteMapping(value = "/{id}") //versão curta do Método de request PUT que deleta a categoria com Id igual ao argumento.
+	public ResponseEntity<Void> delete(@PathVariable Integer id){
+		service.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 }
