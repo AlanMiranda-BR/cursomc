@@ -1,10 +1,14 @@
 package com.cursospring.cursomc.resources;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.cursospring.cursomc.domain.Categoria;
+import com.cursospring.cursomc.dto.CategoriaDTO;
 import com.cursospring.cursomc.services.CategoriaService;
 
 @RestController
@@ -24,6 +29,11 @@ public class CategoriaResource {
 	@Autowired
 	private CategoriaService service;
 	
+	/**
+	 * Método reponsável por retornar um registro do banco de dados
+	 * @param id do registro que se quer encontrar
+	 * @return Objeto com o registro da tabela de id igual ao passado pelo request
+	 */
 	@RequestMapping(value="/{id}", method = RequestMethod.GET) //Método de request GET que envia como argumento o ID de uma categoria.
 	public ResponseEntity<Categoria> find(@PathVariable Integer id) {
 		
@@ -67,5 +77,16 @@ public class CategoriaResource {
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		service.delete(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	/**
+	 * Método responsável por retornar todos os registros de categoria.
+	 * @return Objeto List contendo todos os registros encontrados em categoria
+	 */
+	@GetMapping
+	public ResponseEntity<List<CategoriaDTO>> findAll(){
+		List<Categoria> list = service.findAll();
+		List<CategoriaDTO> listDTO = list.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDTO);
 	}
 }
