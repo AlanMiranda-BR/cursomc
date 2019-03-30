@@ -2,24 +2,51 @@ package com.cursospring.cursomc.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.cursospring.cursomc.services.validation.ClienteInsert;
+
+@ClienteInsert //Anotação customizada
 public class ClienteNewDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	//Atributos da classe Cliente
+	//Atributos da classe Cliente com validação
+	@NotEmpty(message = "Preenchimento Obrigatório")
+	@Length(min = 5,max = 120, message = "O tamanho deve ter entre 5 e 120 caracteres")
 	private String nome;
+	
+	@NotEmpty(message = "Preenchimento Obrigatório")
+	@Email(message = "Email inválido")
 	private String email;
+	
+	@NotEmpty(message = "Preenchimento Obrigatório")
 	private String cpfOuCnpj;
+	
 	private Integer tipo;
 	
-	//Atributos da classe Endereço
+	//Atributos da classe Endereço  com validação
+	@NotEmpty(message = "Preenchimento Obrigatório")
 	private String logradouro;
+	
+	@NotEmpty(message = "Preenchimento Obrigatório")
 	private String numero;
+	
 	private String complemento;
+	
 	private String bairro;
+	
+	@NotEmpty(message = "Preenchimento Obrigatório")
 	private String cep;
-	//Atributos para classe Telefone
+	
+	//Atributos para classe Telefone com validação
+	@NotEmpty(message = "Preenchimento Obrigatório")
 	private String telefone1;
+	
 	private String telefone2;
+	
 	private String telefone3;
 	//Atributo para classe Cidade
 	private Integer cidadeId;
