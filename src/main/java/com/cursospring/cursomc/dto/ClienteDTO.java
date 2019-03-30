@@ -8,7 +8,9 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import com.cursospring.cursomc.domain.Cliente;
+import com.cursospring.cursomc.services.validation.ClienteUpdate;
 
+@ClienteUpdate
 public class ClienteDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	//Atributos
@@ -28,7 +30,7 @@ public class ClienteDTO implements Serializable{
 	public ClienteDTO(Cliente obj) {
 		id = obj.getId();
 		nome = obj.getNome();
-		email = obj.getNome();
+		email = obj.getEmail();
 	}
 	
 	//Getters e Setters
