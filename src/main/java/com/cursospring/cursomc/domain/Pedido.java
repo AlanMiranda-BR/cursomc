@@ -59,6 +59,14 @@ public class Pedido implements Serializable{
 	}
 
 	//Getters e Setters
+	public double getValorTotal() { //Criado manualmente para calcular o valor total do pedido
+		double soma = 0.0;
+		for (ItemPedido ip : itens) {
+			soma += ip.getSubTotal();
+		}
+		return soma;
+	}
+	
 	public Integer getId() {
 		return id;
 	}

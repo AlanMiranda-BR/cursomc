@@ -35,6 +35,10 @@ public class ItemPedido implements Serializable{
 	}
 
 	//Getters e Setters
+	public double getSubTotal() { //Criado manualmente para calcular o valor total de cada item do pedido
+		return (preco - desconto) * quantidade;
+	}
+	
 	@JsonIgnore
 	public Pedido getPedido() { //Criado manualmente, precisa impedir a Serialização com o JsonIgnore para evitar referência cíclica
 		return id.getPedido();
