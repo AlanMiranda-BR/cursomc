@@ -12,9 +12,11 @@ import javax.persistence.OneToOne;
 
 import com.cursospring.cursomc.domain.enums.EstadoPagamento;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) //Estratégia para juntar as entidades filhas (escolhido por terem poucos atributos), criando uma única tabela
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type") // Esta notação informa que a Classe pagamento tem um campo adicional chamado @type
 public abstract class Pagamento implements Serializable {
 	private static final long serialVersionUID = 1L;
 	

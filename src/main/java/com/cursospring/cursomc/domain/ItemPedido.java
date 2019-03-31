@@ -44,8 +44,16 @@ public class ItemPedido implements Serializable{
 		return id.getPedido();
 	}
 	
+	public void setPedido(Pedido pedido) { //Criado manualmente.
+		id.setPedido(pedido);
+	}
+	
 	public Produto getProduto() { //Criado manualmente, permite a Serialização pois é desejavel que os produtos sejam apresentados no Request
 		return id.getProduto();
+	}
+	
+	public void setProduto(Produto produto) { //Criado manualmente.
+		id.setProduto(produto);
 	}
 	
 	public ItemPedidoPK getId() {

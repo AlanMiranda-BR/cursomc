@@ -6,8 +6,10 @@ import javax.persistence.Entity;
 
 import com.cursospring.cursomc.domain.enums.EstadoPagamento;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @Entity
+@JsonTypeName("pagamentoComBoleto") //Envia, ta requisição, um campo @type com o nome pagamentoComBoleto, para que o Json possa instanciar um objeto PagamentoComBoleto 
 public class PagamentoComBoleto extends Pagamento{
 	private static final long serialVersionUID = 1L;
 	
