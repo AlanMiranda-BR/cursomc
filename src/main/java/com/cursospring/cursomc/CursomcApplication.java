@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.cursospring.cursomc.domain.Categoria;
 import com.cursospring.cursomc.domain.Cidade;
@@ -35,6 +36,8 @@ import com.cursospring.cursomc.repositories.ProdutoRepository;
 public class CursomcApplication implements CommandLineRunner{
 
 	//Instancia dos Repositories
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 	@Autowired
@@ -124,7 +127,7 @@ public class CursomcApplication implements CommandLineRunner{
 		est2.getCidades().addAll(Arrays.asList(c2));
 		
 		//Criação de registros do cliente
-		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "36378912377", TipoCliente.PESSOAFISICA);
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "36378912377", TipoCliente.PESSOAFISICA, bCryptPasswordEncoder.encode("123"));
 			//Criação dos telefones do cliente
 			cli1.getTelefones().addAll(Arrays.asList("27363323","93838393"));
 			//Criação dos endereços do cliente
